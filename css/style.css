@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a {
+  font-style: none;
+  color: #171717;
+}
+body {
+  font-family: "popins";
+}
+.main-container {
+  display: flex;
+}
+.sidebar {
+  background: #fefafa;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 0px 25px 25px 0px;
+}
+.navTitle {
+  margin: 5px;
+}
+.logo {
+  width: 70px;
+}
+.navTitleName h1 {
+  font-weight: 800;
+  font-size: 36px;
+  padding: 5px;
+}
+.navTitleDate h1 {
+  font-weight: 800;
+  font-size: 26px;
+  padding: 5px;
+  margin: 0 30px;
+  color: rgb(7, 77, 53);
+}
+.home,
+.events,
+.setting,
+.logout {
+  margin: 15px 0;
+  padding: 10px;
+  height: 50px;
+  background: linear-gradient(
+    91.14deg,
+    #a5a5a5 3.52%,
+    rgba(244, 235, 235, 0) 99.56%
+  );
+}
+.home a,
+.events a,
+.setting a,
+.logout a {
+  padding: 10px;
+  margin: 0 10px;
+  text-decoration: none;
+  color: #171717;
+  font-weight: 500;
+  font-size: 21px;
+}
+.home a:hover,
+.events a:hover,
+.setting a:hover,
+.logout a:hover {
+  background-color: #162f5e;
+  color: #fffcfc;
+}
+.content {
+  width: 100%;
+  background: linear-gradient(180deg, #57c9e2 0%, rgba(4, 192, 234, 0) 100%);
+}
+.content-nav {
+  margin: 50px 50px 30px 10px;
+}
+.content-nav button {
+  width: 200px;
+  height: 50px;
+  margin: 10px 70px;
+  background: #fffdfd;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.content-all {
+  display: flex;
+  justify-content: space-around;
+}
+.eventDetails {
+  width: 750px;
+  padding: 15px;
+  background: #fffcfc;
+  border-radius: 10px;
+  margin: 20px;
+}
+.eventDetailsTop {
+  display: flex;
+  justify-content: space-between;
+}
+.eventTitle h1 {
+  margin-left: 20px;
+  font-family: "inter";
+  font-weight: 700;
+}
+.eventDate h1 {
+  margin-right: 30px;
+  font-weight: 500;
+  font-size: 28px;
+}
+.eventDetailsDown {
+  margin: 10px 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.eventDescription h3 {
+  font-weight: 300;
+  color: #171717;
+}
+.eventTime {
+  margin-right: 30px;
+}
+.eventTime h3 {
+  color: #0c4d5c;
+  font-weight: 500;
+  font-size: 24px;
+}
+.calender {
+  width: 250px;
+  height: 304.92px;
+  background: #fef8f8;
+  box-shadow: 0px 3.60853px 22.5533px rgba(0, 0, 0, 0.15);
+  border-radius: 9.02133px;
+  justify-content: flex-end;
+}
+#allBtn {
+  background-color: rgb(233, 245, 166);
+}
+#allBtn:hover {
+  background-color: rgb(148, 92, 92);
+}
+
+#todayBtn {
+  background-color: rgb(91, 127, 247);
+}
+#tommorowBtn {
+  background-color: rgb(139, 160, 230);
+}
+
+/* starting events style  */
+
+.content-list {
+  margin: 50px 50px 30px 90px;
+}
+.content-list button,
+.content-features button {
+  width: 200px;
+  height: 50px;
+  margin: 10px 50px;
+  background: #fffdfd;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btnSetReminder {
+  margin-left: 500px;
+}
+
+#setReminderBtn {
+  background-color: rgb(233, 245, 166);
+}
+
+#addEventBtn {
+  background-color: rgb(91, 127, 247);
+}
+#editEventBtn {
+  background-color: rgb(139, 160, 230);
+}
+#deleteEventBtn {
+  background-color: rgb(230, 139, 195);
+}
+#completeEventBtn {
+  background-color: rgb(168, 231, 143);
+}
