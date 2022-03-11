@@ -8,6 +8,12 @@
     <title>ERS Events</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
+<?php 
+
+include "./php/conn.php";
+
+mysqli_select_db($conn,'dbname');
+?>
 
 <body>
     <div class="main-container">
@@ -48,64 +54,35 @@
                 <button id="listofEventBtn">List of events</button>
                 <button id="setReminderBtn">Set Reminder</button>
             </div>
+
             <div class="content-all">
                 <div class="eventlist">
+                    <?php
+                 $q = "select * from eventdetails ";
+                  $query = mysqli_query($conn,$q);
+                    // $res = $conn->query($q);
+                    while($res = mysqli_fetch_array($query)){
+            ?>
                     <div class="eventDetails">
                         <div class="eventDetailsTop">
                             <div class="eventTitle">
-                                <h1>Birthday</h1>
+                                <h1><?php   echo $res['event_title']; ?></h1>
                             </div>
                             <div class="eventDate">
-                                <h1>Jan 13, 2022</h1>
+                                <h1><?php   echo $res['date']; ?></h1>
                             </div>
                         </div>
                         <div class="eventDetailsDown">
                             <div class="eventDescription">
-                                <h3> Ashwin Birthday Party at kapan</h3>
+                                <h3><?php   echo $res['event_desc']; ?></h3>
                             </div>
                             <div class="eventTime">
-                                <h3>8:00 AM</h3>
+                                <h3><?php   echo $res['time']; ?></h3>
                             </div>
                         </div>
+                    </div>
+                    <?php } ?>
 
-                    </div>
-                    <div class="eventDetails">
-                        <div class="eventDetailsTop">
-                            <div class="eventTitle">
-                                <h1>Project Defense</h1>
-                            </div>
-                            <div class="eventDate">
-                                <h1>Mar 13, 2022</h1>
-                            </div>
-                        </div>
-                        <div class="eventDetailsDown">
-                            <div class="eventDescription">
-                                <h3>Defense of college project</h3>
-                            </div>
-                            <div class="eventTime">
-                                <h3>10:00 AM</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="eventDetails">
-                        <div class="eventDetailsTop">
-                            <div class="eventTitle">
-                                <h1>Wedding</h1>
-                            </div>
-                            <div class="eventDate">
-                                <h1>Apr 13, 2022</h1>
-                            </div>
-                        </div>
-                        <div class="eventDetailsDown">
-                            <div class="eventDescription">
-                                <h3>Wedding of Subash</h3>
-                            </div>
-                            <div class="eventTime">
-                                <h3>8:00 AM</h3>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
                 <div class="times">
@@ -126,16 +103,33 @@
                 <button id="completeEventBtn">Mark as Done</button>
             </div>
             <div class="popupAddevent">
-                <form>
-
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                     <label>Enter Event </label>
                     <input type="text" name="eventTitle" placeholder="Event Title">
                     <input type="text" name="eventDesc" placeholder="Event Description">
                     <input type="date" name="eventDate" placeholder="Event Date">
                     <input type="time" name="eventTime" placeholder="Event Time">
+                    <input name="submit" type="submit">
                 </form>
             </div>
         </div>
+        <?php
+if(isset($_POST['submit'])){    
+    $eventTitle=$_POST['eventTitle'];
+    $eventDesc=$_POST['eventDesc']; 
+    $eventDate=$_POST['eventDate'];
+    $eventTime=$_POST['eventTime'];
+   
+   $q = "INSERT INTO `eventdetails`(`event_title`, `event_desc`, `date`, `time`) VALUES ('$eventTitle','$eventDesc','$eventDate','$eventTime')";
+           $query = mysqli_query($conn,$q);
+    //    if($conn->query($q)) {
+    //        echo "data inserted";
+    //    }
+    //    else{
+    //       die(mysqli_error($conn));
+    //        } 
+}
+?>
 
 </body>
 

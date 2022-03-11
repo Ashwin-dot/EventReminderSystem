@@ -186,3 +186,8 @@ body {
 #completeEventBtn {
   background-color: rgb(168, 231, 143);
 }
+
+.popupAddevent {
+  margin: 50px;
+  background-color: #fef8f8;
+}

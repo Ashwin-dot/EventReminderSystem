@@ -41,7 +41,7 @@ if(isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password=$_POST['password']; 
     $fullname=$_POST['fullname'];
-    $q = "Select * FROM userdetails where email='$email' && password='$password'";
+    $q = "Select * FROM userdetails where email='$email'";
     $result=mysqli_query($conn,$q);
     $num=mysqli_num_rows($result);
     if($num==1){
