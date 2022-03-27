@@ -8,11 +8,9 @@
     <title>ERS Events</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<?php 
+<?php
 
 include "./php/conn.php";
-
-mysqli_select_db($conn,'dbname');
 ?>
 
 <body>
@@ -26,7 +24,15 @@ mysqli_select_db($conn,'dbname');
                 </div>
                 <div class="navTitleDetails">
                     <div class="navTitleName">
-                        <h1>Welcome, Ashwin!</h1>
+                        <?php
+                        $u = "SELECT * FROM `userdetails` WHERE id=3";
+                        $result = mysqli_query($conn, $u);
+
+                        if ($dis = mysqli_fetch_array($result)) {
+                            echo "<h1>Welcome $dis[fullname]</h1>";
+                        }
+
+                        ?>
                     </div>
                     <div class="navTitleDate">
                         <h1>Jan 01, 2022</h1>
@@ -52,57 +58,95 @@ mysqli_select_db($conn,'dbname');
         <div class="content">
             <div class="content-list">
                 <button id="listofEventBtn">List of events</button>
-                <button id="setReminderBtn">Set Reminder</button>
-            </div>
 
+            </div>
             <div class="content-all">
                 <div class="eventlist">
                     <?php
-                 $q = "select * from eventdetails ";
-                  $query = mysqli_query($conn,$q);
+                    $q = "select * from eventdetails ";
+                    $qy = "select event_id from eventdetails";
+                    $query = mysqli_query($conn, $q);
                     // $res = $conn->query($q);
-                    while($res = mysqli_fetch_array($query)){
-            ?>
+                    while ($res = mysqli_fetch_array($query)) {
+                        if (!$res['complete'] >= 1) {
+                    ?>
                     <div class="eventDetails">
                         <div class="eventDetailsTop">
                             <div class="eventTitle">
-                                <h1><?php   echo $res['event_title']; ?></h1>
+                                <h1><?php echo $res['event_title']; ?></h1>
                             </div>
                             <div class="eventDate">
-                                <h1><?php   echo $res['date']; ?></h1>
+                                <h1><?php echo $res['date']; ?></h1>
                             </div>
                         </div>
                         <div class="eventDetailsDown">
                             <div class="eventDescription">
-                                <h3><?php   echo $res['event_desc']; ?></h3>
+                                <h3><?php echo $res['event_desc']; ?></h3>
                             </div>
                             <div class="eventTime">
-                                <h3><?php   echo $res['time']; ?></h3>
+                                <h3><?php echo $res['time']; ?></h3>
                             </div>
                         </div>
-                    </div>
-                    <?php } ?>
+                        <div class="btnevents">
+                            <button id="editEventBtn" onclick="editevent()">Edit Event</button>
+                            <button id="deleteEventBtn"><a href="./php/delete.php?id=<?php echo $res['event_id']; ?>">
+                                    Delete </a> </button>
+                            <button id="completeEventBtn"><a
+                                    href="./php/complete.php?id=<?php echo $res['event_id']; ?>">
+                                    Mark as Done </a></button>
+                            <button id="setReminderBtn">Set Reminder</button>
 
+
+                        </div>
+
+                    </div>
+
+                    <div class="editEvent" id="eventDetails" style="display: none;">
+                        <form action=" ./php/edit.php?id=<?php echo $res['event_id']; ?>" method="post">
+                            <label>Enter Event </label>
+
+                            <input type="text" name="eeventTitle" placeholder="Event Title"
+                                value=" <?php echo $res['event_title'] ?> ">
+                            <input type="text" name="eeventDesc" placeholder="Event Description"
+                                value=" <?php echo $res['event_desc'] ?> ">
+                            <input type="date" name="eeventDate" placeholder="Event Date"
+                                value=" <?php echo $res['date'] ?> ">
+                            <input type="time" name="eeventTime" placeholder="Event Time"
+                                value=" <?php echo $res['time'] ?> ">
+                            <input name="esubmit" type="submit">
+                        </form>
+                    </div>
+                    <?php }
+                    } ?>
 
                 </div>
-                <div class="times">
-                    <div class="calender">
-
-                    </div>
-                    <div class="time">
-
-                    </div>
-                </div>
-
-
             </div>
+
             <div class="content-features">
-                <button id="addEventBtn">Add Event</button>
-                <button id="editEventBtn">Edit Event</button>
-                <button id="deleteEventBtn">Delete Event</button>
-                <button id="completeEventBtn">Mark as Done</button>
+                <button id="addEventBtn" onclick="addevent()">Add Event</button>
             </div>
-            <div class="popupAddevent">
+            <script>
+            function addevent() {
+                var addDetails = document.getElementById('addDetails')
+                if (addDetails.style.display === "none") {
+                    addDetails.style.display = "block";
+                } else {
+                    addDetails.style.display = "none";
+                }
+            }
+
+            function editevent() {
+                var editDetails = document.getElementById('eventDetails')
+                if (editDetails.style.display === "none") {
+                    editDetails.style.display = "block";
+                } else {
+                    editDetails.style.display = "none";
+                }
+            }
+            </script>
+
+
+            <div class="popupAddevent" id="addDetails" style="display: none;">
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                     <label>Enter Event </label>
                     <input type="text" name="eventTitle" placeholder="Event Title">
@@ -114,22 +158,26 @@ mysqli_select_db($conn,'dbname');
             </div>
         </div>
         <?php
-if(isset($_POST['submit'])){    
-    $eventTitle=$_POST['eventTitle'];
-    $eventDesc=$_POST['eventDesc']; 
-    $eventDate=$_POST['eventDate'];
-    $eventTime=$_POST['eventTime'];
-   
-   $q = "INSERT INTO `eventdetails`(`event_title`, `event_desc`, `date`, `time`) VALUES ('$eventTitle','$eventDesc','$eventDate','$eventTime')";
-           $query = mysqli_query($conn,$q);
-    //    if($conn->query($q)) {
-    //        echo "data inserted";
-    //    }
-    //    else{
-    //       die(mysqli_error($conn));
-    //        } 
-}
-?>
+
+
+        if (isset($_POST['submit'])) {
+            $eventTitle = $_POST['eventTitle'];
+            $eventDesc = $_POST['eventDesc'];
+            $eventDate = $_POST['eventDate'];
+            $eventTime = $_POST['eventTime'];
+
+            $q = "INSERT INTO `eventdetails`(`event_title`, `event_desc`, `date`, `time`) VALUES ('$eventTitle','$eventDesc','$eventDate','$eventTime')";
+            $query = mysqli_query($conn, $q);
+            //    if($conn->query($q)) {
+            //        echo "data inserted";
+            //    }
+            //    else{
+            //       die(mysqli_error($conn));
+            //        } 
+            echo "<meta http-equiv='refresh' content='0'>";
+        }
+
+        ?>
 
 </body>
 

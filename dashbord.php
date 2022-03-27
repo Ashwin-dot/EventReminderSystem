@@ -8,11 +8,11 @@
     <title>Event Reminder System</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
-<?php 
+<?php
 
 include "./php/conn.php";
 
-mysqli_select_db($conn,'dbname');
+mysqli_select_db($conn, 'dbname');
 ?>
 
 
@@ -27,7 +27,15 @@ mysqli_select_db($conn,'dbname');
                 </div>
                 <div class="navTitleDetails">
                     <div class="navTitleName">
-                        <h1>Welcome, Ashwin!</h1>
+                        <?php
+                        $u = "SELECT * FROM `userdetails` WHERE id=3";
+                        $result = mysqli_query($conn, $u);
+
+                        if ($dis = mysqli_fetch_array($result)) {
+                            echo "<h1>Welcome $dis[fullname]</h1>";
+                        }
+
+                        ?>
                     </div>
                     <div class="navTitleDate">
                         <h1>Jan 01, 2022</h1>
@@ -60,44 +68,37 @@ mysqli_select_db($conn,'dbname');
             <div class="content-all">
                 <div class="eventlist">
                     <?php
-                 $q = "select * from eventdetails ";
-                  $query = mysqli_query($conn,$q);
+                    $q = "select * from eventdetails ";
+                    $query = mysqli_query($conn, $q);
                     // $res = $conn->query($q);
-                    while($res = mysqli_fetch_array($query)){    
-                 ?>
+                    while ($res = mysqli_fetch_array($query)) {
+                        if (!$res['complete'] >= 1) {
+                    ?>
                     <div class="eventDetails">
                         <div class="eventDetailsTop">
                             <div class="eventTitle">
-                                <h1> <?php   echo $res['event_title']; ?></h1>
+                                <h1> <?php echo $res['event_title']; ?></h1>
                             </div>
                             <div class="eventDate">
-                                <h1><?php   echo $res['date']; ?></h1>
+                                <h1><?php echo $res['date']; ?></h1>
                             </div>
                         </div>
                         <div class="eventDetailsDown">
                             <div class="eventDescription">
-                                <h3> <?php   echo $res['event_desc']; ?></h3>
+                                <h3> <?php echo $res['event_desc']; ?></h3>
                             </div>
                             <div class="eventTime">
-                                <h3><?php   echo $res['time']; ?></h3>
+                                <h3><?php echo $res['time']; ?></h3>
                             </div>
                         </div>
 
                     </div>
                     <?php
                         }
+                    }
                     ?>
 
                 </div>
-                <div class="times">
-                    <div class="calender">
-
-                    </div>
-                    <div class="time">
-
-                    </div>
-                </div>
-
             </div>
         </div>
 

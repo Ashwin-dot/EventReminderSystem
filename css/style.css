@@ -115,6 +115,12 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.btnevents {
+  margin: 20px;
+}
+.btnevents button {
+  margin-left: 20px;
+}
 .eventDescription h3 {
   font-weight: 300;
   color: #171717;
@@ -127,14 +133,7 @@ body {
   font-weight: 500;
   font-size: 24px;
 }
-.calender {
-  width: 250px;
-  height: 304.92px;
-  background: #fef8f8;
-  box-shadow: 0px 3.60853px 22.5533px rgba(0, 0, 0, 0.15);
-  border-radius: 9.02133px;
-  justify-content: flex-end;
-}
+
 #allBtn {
   background-color: rgb(233, 245, 166);
 }
