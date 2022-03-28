@@ -8,12 +8,25 @@
         <title>Event Reminder System</title>
         <link rel="stylesheet" href="./css/style.css">
     </head>
+
     <?php
+    session_start();
+    // session_destroy();
+    // if (!isset($_SESSION['SESSION_EMAIL'])) {
+    //     header("Location: ./signin.php");
+    //     die();
+    // }
 
     include "./php/conn.php";
 
-    ?>
+    $query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSION_EMAIL']}'");
 
+    if (mysqli_num_rows($query) > 0) {
+        $row = mysqli_fetch_assoc($query);
+        $userId = $row['id'];
+        // echo "Welcome " . $row['fullname'] . $row['id'];
+
+    ?>
 
     <body>
         <div class="main-container">
@@ -26,15 +39,11 @@
                     </div>
                     <div class="navTitleDetails">
                         <div class="navTitleName">
-                            <?php
-                            $u = "SELECT * FROM `users` WHERE id=3";
-                            $result = mysqli_query($conn, $u);
 
-                            if ($dis = mysqli_fetch_array($result)) {
-                                echo "<h1>Welcome $dis[fullname]</h1>";
-                            }
 
-                            ?>
+                            <h1><?php echo "Welcome " . $row['fullname'];
+                                }
+                                    ?></h1>
                         </div>
                         <div class="navTitleDate">
                             <h1>Jan 01, 2022</h1>
@@ -53,7 +62,7 @@
                         <a href="events.html">Setting </a>
                     </div>
                     <div class="logout">
-                        <a href="events.html">Logout</a>
+                        <a href="./logout.php">Logout</a>
                     </div>
                 </div>
             </div>
@@ -67,12 +76,12 @@
                 <div class="content-all">
                     <div class="eventlist">
                         <?php
-                        $q = "select * from eventdetails ";
-                        $query = mysqli_query($conn, $q);
-                        // $res = $conn->query($q);
-                        while ($res = mysqli_fetch_array($query)) {
-                            if (!$res['complete'] >= 1) {
-                        ?>
+                            $q = "select * from eventdetails WHERE userId= $userId";
+                            $query = mysqli_query($conn, $q);
+                            // $res = $conn->query($q);
+                            while ($res = mysqli_fetch_array($query)) {
+                                if (!$res['complete'] >= 1) {
+                            ?>
                         <div class="eventDetails">
                             <div class="eventDetailsTop">
                                 <div class="eventTitle">
@@ -93,9 +102,9 @@
 
                         </div>
                         <?php
+                                }
                             }
-                        }
-                        ?>
+                            ?>
 
                     </div>
                 </div>

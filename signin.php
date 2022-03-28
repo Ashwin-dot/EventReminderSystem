@@ -6,6 +6,7 @@ $msg = "";
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, md5($_POST['password']));
+    // $userId = mysqli_real_escape_string($conn, $_POST['id']);
 
     $sql = "SELECT * FROM users WHERE email='{$email}' AND password='{$password}'";
     $result = mysqli_query($conn, $sql);
@@ -15,6 +16,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['SESSION_EMAIL'] = $email;
         $_SESSION['SESSION_ID'] = $row['id'];
         header("Location: ./dashbord.php");
+        // header("Location: ./events.php");
     } else {
         $msg = "Email or password donot match";
     }

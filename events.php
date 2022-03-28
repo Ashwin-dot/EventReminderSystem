@@ -9,8 +9,22 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <?php
+session_start();
+// session_destroy();
+// if (!isset($_SESSION['SESSION_EMAIL'])) {
+//     header("Location: ./signin.php");
+//     die();
+// }
 
 include "./php/conn.php";
+
+$query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSION_EMAIL']}'");
+
+if (mysqli_num_rows($query) > 0) {
+    $row = mysqli_fetch_assoc($query);
+    $userId = $row['id'];
+    // echo "Welcome " . $row['fullname'] . $row['id'];
+
 ?>
 
 <body>
@@ -24,16 +38,9 @@ include "./php/conn.php";
                 </div>
                 <div class="navTitleDetails">
                     <div class="navTitleName">
-                        <?php
-                        // ! IMPPPPPP
-                        $u = "SELECT * FROM `users` WHERE id=3";
-                        $result = mysqli_query($conn, $u);
-
-                        if ($dis = mysqli_fetch_array($result)) {
-                            echo "<h1>Welcome $dis[fullname]</h1>";
-                        }
-
-                        ?>
+                        <h1><?php echo "Welcome " . $row['fullname'];
+                            }
+                                ?></h1>
                     </div>
                     <div class="navTitleDate">
                         <h1>Jan 01, 2022</h1>
@@ -52,7 +59,7 @@ include "./php/conn.php";
                     <a href="events.html">Setting </a>
                 </div>
                 <div class="logout">
-                    <a href="events.html">Logout</a>
+                    <a href="./logout.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -64,13 +71,13 @@ include "./php/conn.php";
             <div class="content-all">
                 <div class="eventlist">
                     <?php
-                    $q = "select * from eventdetails ";
-                    $qy = "select event_id from eventdetails";
-                    $query = mysqli_query($conn, $q);
-                    // $res = $conn->query($q);
-                    while ($res = mysqli_fetch_array($query)) {
-                        if (!$res['complete'] >= 1) {
-                    ?>
+                        $q = "select * from eventdetails WHERE userId= $userId ";
+                        $qy = "select event_id from eventdetails WHERE userId= $userId";
+                        $query = mysqli_query($conn, $q);
+                        // $res = $conn->query($q);
+                        while ($res = mysqli_fetch_array($query)) {
+                            if (!$res['complete'] >= 1) {
+                        ?>
                     <div class="eventDetails">
                         <div class="eventDetailsTop">
                             <div class="eventTitle">
@@ -118,7 +125,7 @@ include "./php/conn.php";
                         </form>
                     </div>
                     <?php }
-                    } ?>
+                        } ?>
 
                 </div>
             </div>
@@ -161,24 +168,24 @@ include "./php/conn.php";
         <?php
 
 
-        if (isset($_POST['submit'])) {
-            $eventTitle = $_POST['eventTitle'];
-            $eventDesc = $_POST['eventDesc'];
-            $eventDate = $_POST['eventDate'];
-            $eventTime = $_POST['eventTime'];
+            if (isset($_POST['submit'])) {
+                $eventTitle = $_POST['eventTitle'];
+                $eventDesc = $_POST['eventDesc'];
+                $eventDate = $_POST['eventDate'];
+                $eventTime = $_POST['eventTime'];
 
-            $q = "INSERT INTO `eventdetails`(`event_title`, `event_desc`, `date`, `time`) VALUES ('$eventTitle','$eventDesc','$eventDate','$eventTime')";
-            $query = mysqli_query($conn, $q);
-            //    if($conn->query($q)) {
-            //        echo "data inserted";
-            //    }
-            //    else{
-            //       die(mysqli_error($conn));
-            //        } 
-            echo "<meta http-equiv='refresh' content='0'>";
-        }
+                $q = "INSERT INTO `eventdetails`(`event_title`, `event_desc`, `date`, `time`,`userId`) VALUES ('$eventTitle','$eventDesc','$eventDate','$eventTime','$userId')";
+                $query = mysqli_query($conn, $q);
+                //    if($conn->query($q)) {
+                //        echo "data inserted";
+                //    }
+                //    else{
+                //       die(mysqli_error($conn));
+                //        } 
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
 
-        ?>
+            ?>
 
 </body>
 
