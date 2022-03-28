@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../php/conn.php';
+include './php/conn.php';
 $msg = "";
 
 if (isset($_POST['submit'])) {
@@ -13,7 +13,8 @@ if (isset($_POST['submit'])) {
     if (mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
         $_SESSION['SESSION_EMAIL'] = $email;
-        header("Location: ../dashbord.php");
+        $_SESSION['SESSION_ID'] = $row['id'];
+        header("Location: ./dashbord.php");
     } else {
         $msg = "Email or password donot match";
     }
@@ -30,7 +31,7 @@ if (isset($_POST['submit'])) {
 
 <head>
     <title>Signin</title>
-    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./sign in/CSS/style.css">
 </head>
 
 <body>
@@ -38,7 +39,7 @@ if (isset($_POST['submit'])) {
         <div class="First-container">
             <div class="Inner-firstcontainer">
                 <div class="image">
-                    <img src="./Images/logo.png">
+                    <img src="./sign in/Images/logo.png">
                 </div>
                 <div class="links">
                     <ul>
@@ -68,7 +69,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="Second-container">
             <div class="Inner-secondcontainer">
-                <img class="secondcontainerimg" src="./Images/events.png">
+                <img class="secondcontainerimg" src="./sign in/Images/events.png">
             </div>
         </div>
     </div>

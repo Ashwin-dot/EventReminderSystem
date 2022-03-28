@@ -1,60 +1,85 @@
+<?php
+include './php/conn.php';
+$msg = "";
+if (isset($_POST['submit'])) {
+    $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, md5($_POST['password']));
+    $confirm_password = mysqli_real_escape_string($conn, md5($_POST['confirm-password']));
+
+
+    if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users WHERE email='{$email}'")) > 0) {
+        $msg = "{$email}-This email has been already exists";
+    } else {
+        if ($password === $confirm_password) {
+            $sql = "INSERT INTO users (fullname, email, password) VALUES('{$fullname}','{$email}','{$password}')";
+            $result = mysqli_query($conn, $sql);
+            $msg = "Successfully registered your account";
+        } else {
+            $msg = "Password and confirm password donot match.";
+        }
+    }
+}
+?>
+
+
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERS Signup</title>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="./sign in/CSS/signup.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="loginForm">
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-                <div class="form-group-username">
-                    <label id="fullName">Full Name</label>
-                    <input type="text" name="fullname" class="fullName" placeholder="Full Name">
+    <div class="Full-container">
+        <div class="First-container">
+            <div class="Inner-firstcontainer">
+                <div class="image">
+                    <img src="./sign in/Images/logo.png">
                 </div>
-                <div class="form-group-username">
-                    <label id="email">Email</label>
-                    <input type="text" name="email" class="email" placeholder="email">
+                <div class="head">
+                    <h3>Create account</h3>
                 </div>
-                <div class="form-group-password">
-                    <label id="username">Password</label>
-                    <input type="password" name="password" class="password" placeholder="********">
-                </div>
-                <input name="submit" type="submit">
-            </form>
+            </div>
+
+            <div class="form">
+                <form action="" method="post">
+                    <div class="form-input">
+                        <input class="fullname" name="fullname" type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-input">
+                        <input class="email" name="email" type="text" placeholder="Email" required>
+                    </div>
+                    <div class="form-input">
+                        <input class="password" name="password" type="password" placeholder="password">
+                    </div>
+
+                    <div class="form-input">
+                        <input class="confirm-password" name="confirm-password" type="password"
+                            placeholder="Confirm password">
+                    </div>
+
+                    <div class="form-input">
+                        <button name="submit" class="btn" type="submit">Register</button>
+
+                    </div>
+                </form>
+            </div>
+            <div class="footer">
+                <p class="firstsentence">Already have an account?<button class="secondword"><a
+                            href="./signin.php">Login</a></button></p>
+            </div>
+            <?php echo $msg; ?>
         </div>
-        <div class="SignupImg"></div>
+        <div class="Second-container">
+            <div class="Inner-secondcontainer">
+                <img class="secondcontainerimg" src="./sign in/Images/events.png">
+            </div>
+        </div>
     </div>
 </body>
-
-<?php 
-
-include "./php/conn.php";
-
-mysqli_select_db($conn,'dbname');
-
-if(isset($_POST['submit'])) {
-    $email = $_POST['email'];
-    $password=$_POST['password']; 
-    $fullname=$_POST['fullname'];
-    $q = "Select * FROM userdetails where email='$email'";
-    $result=mysqli_query($conn,$q);
-    $num=mysqli_num_rows($result);
-    if($num==1){
-    echo"Duplicate Data";
-    }
-    else{
-        $qy = "insert into userdetails(email,password,fullname)values('".$email."','".$password."','".$fullname."')";
-        mysqli_query($conn,$qy);
-
-}
-
-}
-
-?>
 
 </html>

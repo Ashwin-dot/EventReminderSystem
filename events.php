@@ -26,7 +26,7 @@ include "./php/conn.php";
                     <div class="navTitleName">
                         <?php
                         // ! IMPPPPPP
-                        $u = "SELECT * FROM `userdetails` WHERE id=3";
+                        $u = "SELECT * FROM `users` WHERE id=3";
                         $result = mysqli_query($conn, $u);
 
                         if ($dis = mysqli_fetch_array($result)) {
