@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include '../php/conn.php';
 $msg = "";
 if (isset($_POST['submit'])) {
     $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);

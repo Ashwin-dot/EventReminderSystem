@@ -25,6 +25,7 @@ include "./php/conn.php";
                 <div class="navTitleDetails">
                     <div class="navTitleName">
                         <?php
+                        // ! IMPPPPPP
                         $u = "SELECT * FROM `userdetails` WHERE id=3";
                         $result = mysqli_query($conn, $u);
 

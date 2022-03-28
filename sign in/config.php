@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost","root","","login");
-if(!$conn){
+$conn = mysqli_connect("localhost", "root", "","event reminder system");
+if (!$conn) {
     echo "Connection Failed";
 }
