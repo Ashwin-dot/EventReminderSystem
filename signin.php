@@ -16,6 +16,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['SESSION_EMAIL'] = $email;
         $_SESSION['SESSION_ID'] = $row['id'];
         header("Location: ./dashbord.php");
+        $_SESSION['loggedIn'] = true;
         // header("Location: ./events.php");
     } else {
         $msg = "Email or password donot match";

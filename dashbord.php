@@ -10,21 +10,26 @@
     </head>
 
     <?php
-    session_start();
+    // session_start();
     // session_destroy();
     // if (!isset($_SESSION['SESSION_EMAIL'])) {
     //     header("Location: ./signin.php");
     //     die();
     // }
 
-    include "./php/conn.php";
+    session_start();
 
-    $query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSION_EMAIL']}'");
+    if ($_SESSION['loggedIn']) {
 
-    if (mysqli_num_rows($query) > 0) {
-        $row = mysqli_fetch_assoc($query);
-        $userId = $row['id'];
-        // echo "Welcome " . $row['fullname'] . $row['id'];
+
+        include "./php/conn.php";
+
+        $query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSION_EMAIL']}'");
+
+        if (mysqli_num_rows($query) > 0) {
+            $row = mysqli_fetch_assoc($query);
+            $userId = $row['id'];
+            // echo "Welcome " . $row['fullname'] . $row['id'];
 
     ?>
 
@@ -42,8 +47,8 @@
 
 
                             <h1><?php echo "Welcome " . $row['fullname'];
-                                }
-                                    ?></h1>
+                                    }
+                                        ?></h1>
                         </div>
                         <div class="navTitleDate">
                             <h1>Jan 01, 2022</h1>
@@ -76,12 +81,12 @@
                 <div class="content-all">
                     <div class="eventlist">
                         <?php
-                            $q = "select * from eventdetails WHERE userId= $userId";
-                            $query = mysqli_query($conn, $q);
-                            // $res = $conn->query($q);
-                            while ($res = mysqli_fetch_array($query)) {
-                                if (!$res['complete'] >= 1) {
-                            ?>
+                                $q = "select * from eventdetails WHERE userId= $userId";
+                                $query = mysqli_query($conn, $q);
+                                // $res = $conn->query($q);
+                                while ($res = mysqli_fetch_array($query)) {
+                                    if (!$res['complete'] >= 1) {
+                                ?>
                         <div class="eventDetails">
                             <div class="eventDetailsTop">
                                 <div class="eventTitle">
@@ -102,7 +107,10 @@
 
                         </div>
                         <?php
+                                    }
                                 }
+                            } else {
+                                header('location:./signin.php');
                             }
                             ?>
 
