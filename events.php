@@ -9,14 +9,6 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <?php
-// session_start();
-// session_destroy();
-// if (!isset($_SESSION['SESSION_EMAIL'])) {
-//     header("Location: ./signin.php");
-//     die();
-// }
-
-
 session_start();
 
 if ($_SESSION['loggedIn']) {
@@ -48,7 +40,13 @@ if ($_SESSION['loggedIn']) {
                                     ?></h1>
                     </div>
                     <div class="navTitleDate">
-                        <h1>Jan 01, 2022</h1>
+                        <script>
+                        var today = new Date();
+                        var todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        var todayTime = today.getHours() + "hr" + " : " + today.getMinutes() + "m";
+                        document.write(`<h1>${todayDate} </h1>`)
+                        document.write(`<h1>${todayTime} </h1>`)
+                        </script>
                     </div>
 
                 </div>
@@ -61,7 +59,7 @@ if ($_SESSION['loggedIn']) {
                     <a href="#">Events </a>
                 </div>
                 <div class="setting">
-                    <a href="events.html">Setting </a>
+                    <a href="./setting.php">Setting </a>
                 </div>
                 <div class="logout">
                     <a href="./logout.php">Logout</a>
@@ -72,6 +70,19 @@ if ($_SESSION['loggedIn']) {
             <div class="content-list">
                 <button id="listofEventBtn">List of events</button>
 
+            </div>
+            <div class="content-features">
+                <button id="addEventBtn" onclick="addevent()">Add Event</button>
+            </div>
+            <div class="popupAddevent" id="addDetails" style="display: none;">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+                    <label>Enter Event </label>
+                    <input type="text" name="eventTitle" placeholder="Event Title">
+                    <input type="text" name="eventDesc" placeholder="Event Description">
+                    <input type="date" name="eventDate" placeholder="Event Date">
+                    <input type="time" name="eventTime" placeholder="Event Time">
+                    <input name="submit" type="submit">
+                </form>
             </div>
             <div class="content-all">
                 <div class="eventlist">
@@ -135,9 +146,7 @@ if ($_SESSION['loggedIn']) {
                 </div>
             </div>
 
-            <div class="content-features">
-                <button id="addEventBtn" onclick="addevent()">Add Event</button>
-            </div>
+
             <script>
             function addevent() {
                 var addDetails = document.getElementById('addDetails')
@@ -157,18 +166,6 @@ if ($_SESSION['loggedIn']) {
                 }
             }
             </script>
-
-
-            <div class="popupAddevent" id="addDetails" style="display: none;">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-                    <label>Enter Event </label>
-                    <input type="text" name="eventTitle" placeholder="Event Title">
-                    <input type="text" name="eventDesc" placeholder="Event Description">
-                    <input type="date" name="eventDate" placeholder="Event Date">
-                    <input type="time" name="eventTime" placeholder="Event Time">
-                    <input name="submit" type="submit">
-                </form>
-            </div>
         </div>
         <?php
 

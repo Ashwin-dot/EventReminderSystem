@@ -10,13 +10,6 @@
     </head>
 
     <?php
-    // session_start();
-    // session_destroy();
-    // if (!isset($_SESSION['SESSION_EMAIL'])) {
-    //     header("Location: ./signin.php");
-    //     die();
-    // }
-
     session_start();
 
     if ($_SESSION['loggedIn']) {
@@ -47,7 +40,7 @@
 
 
                             <h1><?php echo "Welcome, " . $row['fullname'];
-                                    }
+
                                         ?></h1>
                         </div>
                         <div class="navTitleDate">
@@ -64,13 +57,13 @@
                 </div>
                 <div class="menu">
                     <div class="home">
-                        <a href="#">Home </a>
+                        <a href="./dashbord.php">Home </a>
                     </div>
                     <div class="events">
                         <a href="./events.php">Events </a>
                     </div>
                     <div class="setting">
-                        <a href="./setting.php">Setting </a>
+                        <a href="#">Setting </a>
                     </div>
                     <div class="logout">
                         <a href="./logout.php">Logout</a>
@@ -78,53 +71,38 @@
                 </div>
             </div>
             <div class="content">
-                <div class="content-nav">
-                    <button id="allBtn">All</button>
-                    <button id="todayBtn">Today</button>
-                    <button id="tommorowBtn">Tommorow</button>
-                </div>
 
-                <div class="content-all">
-                    <div class="eventlist">
-                        <?php
-                                $q = "select * from eventdetails WHERE userId= $userId";
-                                $query = mysqli_query($conn, $q);
-                                // $res = $conn->query($q);
-                                while ($res = mysqli_fetch_array($query)) {
-                                    if (!$res['complete'] >= 1) {
-                                ?>
-                        <div class="eventDetails">
-                            <div class="eventDetailsTop">
-                                <div class="eventTitle">
-                                    <h1> <?php echo $res['event_title']; ?></h1>
-                                </div>
-                                <div class="eventDate">
-                                    <h1><?php echo $res['date']; ?></h1>
-                                </div>
-                            </div>
-                            <div class="eventDetailsDown">
-                                <div class="eventDescription">
-                                    <h3> <?php echo $res['event_desc']; ?></h3>
-                                </div>
-                                <div class="eventTime">
-                                    <h3><?php echo $res['time']; ?></h3>
-                                </div>
-                            </div>
+                <div class="changeName">
 
-                        </div>
-                        <?php
-                                    }
-                                }
-                            } else {
-                                header('location:./signin.php');
-                            }
-                            ?>
-
-                    </div>
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+                        <label>Change Name: </label>
+                        <input type="text" name="newName" value="<?php echo $row['fullname'] ?> ">
+                        <input type="password" name="newPassword" placeholder="*******">
+                        <input name="submit" type="submit">
+                    </form>
                 </div>
             </div>
 
+        </div>
+        <?php
+            if (isset($_POST['submit'])) {
+                $newName = $_POST['newName'];
+                $newPassword = md5($_POST['newPassword']);
 
+                $q = "UPDATE `users` SET `fullname`='$newName', `password`='$newPassword' WHERE `id`='$userId' ";
+                $query = mysqli_query($conn, $q);
+                // if ($conn->query($q)) {
+                //     echo "data inserted";
+                // } else {
+                //     die(mysqli_error($conn));
+                // }
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
+        }
+    } else {
+        header('location:./signin.php');
+    }
+        ?>
     </body>
 
     </html>

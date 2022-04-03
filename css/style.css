@@ -185,8 +185,15 @@ body {
 #completeEventBtn {
   background-color: rgb(168, 231, 143);
 }
+input {
+  padding: 5px;
+  cursor: pointer;
+}
 
 .popupAddevent {
   margin: 50px;
   background-color: #fef8f8;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
