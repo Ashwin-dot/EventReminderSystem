@@ -37,22 +37,33 @@
                     </div>
                     <div class="navTitleDetails">
                         <div class="navTitleName">
-
-
-                            <h1><?php echo "Welcome, " . $row['fullname'];
-
-                                        ?></h1>
+                            <h1><?php echo "Welcome, " . $row['fullname']; ?></h1>
                         </div>
                         <div class="navTitleDate">
                             <script>
                             var today = new Date();
                             var todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                            var todayTime = today.getHours() + "hr" + " : " + today.getMinutes() + "m";
                             document.write(`<h1>${todayDate} </h1>`)
-                            document.write(`<h1>${todayTime} </h1>`)
                             </script>
+                            <div id="timer">
+                                <script>
+                                setInterval(function() {
+                                    var currentTime = new Date();
+                                    var currentHours = currentTime.getHours();
+                                    var currentMinutes = currentTime.getMinutes();
+                                    var currentSeconds = currentTime.getSeconds();
+                                    currentMinutes = (currentMinutes < 10 ? "0" : "") + currentMinutes;
+                                    currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+                                    var timeOfDay = (currentHours < 12) ? "AM" : "PM";
+                                    currentHours = (currentHours > 12) ? currentHours - 12 : currentHours;
+                                    currentHours = (currentHours == 0) ? 12 : currentHours;
+                                    var currentTimeString = currentHours + ":" + currentMinutes + ":" +
+                                        currentSeconds + " " + timeOfDay;
+                                    document.getElementById("timer").innerHTML = currentTimeString;
+                                }, 10);
+                                </script>
+                            </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="menu">
@@ -61,6 +72,9 @@
                     </div>
                     <div class="events">
                         <a href="./events.php">Events </a>
+                    </div>
+                    <div class="completed">
+                        <a href="./completed.php">Completed Events </a>
                     </div>
                     <div class="setting">
                         <a href="#">Setting </a>
@@ -71,25 +85,30 @@
                 </div>
             </div>
             <div class="content">
-
                 <div class="changeName">
-
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-                        <label>Change Name: </label>
+                        <label>Change Name </label>
                         <input type="text" name="newName" value="<?php echo $row['fullname'] ?> ">
-                        <input type="password" name="newPassword" placeholder="*******">
+                        <br>
                         <input name="submit" type="submit">
                     </form>
+                    <!-- <form>
+
+                        <label>New Password </label>
+                        <input type="password" name="newPassword" placeholder="*******">
+
+                        <label>Confirm Password </label>
+                        <input type="password" name="confirmPassword" placeholder="*******">
+                    </form> -->
                 </div>
             </div>
-
         </div>
         <?php
             if (isset($_POST['submit'])) {
                 $newName = $_POST['newName'];
-                $newPassword = md5($_POST['newPassword']);
-
-                $q = "UPDATE `users` SET `fullname`='$newName', `password`='$newPassword' WHERE `id`='$userId' ";
+                // $confirmPassword = md5($_POST['confirmPassword']);
+                // $q = "UPDATE `users` SET `fullname`='$newName', `password`='$confirmPassword' WHERE `id`='$userId' ";
+                $q = "UPDATE `users` SET `fullname`='$newName' WHERE `id`='$userId' ";
                 $query = mysqli_query($conn, $q);
                 // if ($conn->query($q)) {
                 //     echo "data inserted";
