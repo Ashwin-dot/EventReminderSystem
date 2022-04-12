@@ -56,12 +56,14 @@ if (isset($_POST['submit'])) {
                 <p class="signindesc">Sign in to continue to our application</p>
             </div>
             <div class="form">
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return validation()">
                     <div class="form-input">
-                        <input class="email" name="email" type="email" placeholder="youremail@gmail.com">
+                        <input class="email" name="email" id="email" type="email" placeholder="youremail@gmail.com" required>
+                        <span id = "emailerror"></span>
                     </div>
                     <div class="form-input">
-                        <input class="password" name="password" type="password" placeholder="password">
+                        <input class="password" name="password" id="password" type="password" placeholder="password" required>
+                        <span id = "passworderror"></span>
                     </div>
                     <div class="form-input">
                         <button name="submit" class="btn" type="submit">Sign In</button>
@@ -76,6 +78,28 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function validation(){
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            var emailcheck = /^[A-Za-z_]{3,}@[A-Za-z]{3,}[.]{1}[A-Za-z.]{2,6}$/;
+            var passwordcheck = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+            if(emailcheck.test(email)){
+                document.getElementById('emailerror').innerHTML=" ";
+            }else{
+                document.getElementById('emailerror').innerHTML="Email is invalid";
+                return false;
+            }
+
+            if(passwordcheck.test(password)){
+                document.getElementById('passworderror').innerHTML=" ";
+            }else{
+                document.getElementById('passworderror').innerHTML="Include at least one number,letter with min of 8 characters";
+                return false;
+            }
+    </script>
 </body>
 
 </html>

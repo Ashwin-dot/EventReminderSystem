@@ -115,22 +115,22 @@ if ($_SESSION['loggedIn']) {
                     </div>
 
                     <div class="editEvent" id="eventDetails" style="display: none;">
-                        <form action=" ./php/edit.php?id=<?php echo $res['event_id']; ?>" method="post">
+                        <form name="editEvent" action=" ./php/edit.php?id=<?php echo $res['event_id']; ?>" method="post" onsubmit="return evalidation()">
                             <label>Enter Event </label>
-
-                            <input type="text" name="eeventTitle" placeholder="Event Title"
-                                value=" <?php echo $res['event_title'] ?> ">
-                            <input type="text" name="eeventDesc" placeholder="Event Description"
-                                value=" <?php echo $res['event_desc'] ?> ">
-                            <input type="date" name="eeventDate" placeholder="Event Date"
-                                value=" <?php echo $res['date'] ?> ">
-                            <input type="time" name="eeventTime" placeholder="Event Time"
-                                value=" <?php echo $res['time'] ?> ">
+                            <input type="text" id="eeventTitle" name="eeventTitle" placeholder="Event Title"
+                                value=" <?php echo $res['event_title'] ?> "><span id = "etitleerror"></span>
+                            <input type="text" id="eeventDesc" name="eeventDesc" placeholder="Event Description"
+                                value=" <?php echo $res['event_desc'] ?> "><span id = "edescerror"></span>
+                            <input type="date" id="eeventDate" name="eeventDate" placeholder="Event Date"
+                                value=" <?php echo $res['date'] ?> "><span id = "edateerror"></span>
+                            <input type="time" id="eeventTime" name="eeventTime" placeholder="Event Time"
+                                value=" <?php echo $res['time'] ?> "><span id = "etimeerror"></span>
                             <input name="esubmit" type="submit">
                         </form>
                     </div>
                     <?php }
-                            } ?>
+                            }
+                     ?>
 
                 </div>
             </div>
@@ -159,13 +159,13 @@ if ($_SESSION['loggedIn']) {
             </script>
 
 
-            <div class="popupAddevent" id="addDetails" style="display: none;">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+            <div class="popupAddevent"  id="addDetails" style="display: none;">
+                <form name="addEvent" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" onsubmit="return validation()">
                     <label>Enter Event </label>
-                    <input type="text" name="eventTitle" placeholder="Event Title">
-                    <input type="text" name="eventDesc" placeholder="Event Description">
-                    <input type="date" name="eventDate" placeholder="Event Date">
-                    <input type="time" name="eventTime" placeholder="Event Time">
+                    <input type="text" id="eventTitle" name="eventTitle" placeholder="Event Title"><span id = "titleerror"></span>
+                    <input type="text" id="eventDesc" name="eventDesc" placeholder="Event Description"><span id = "descerror"></span>
+                    <input type="date" id="eventDate" name="eventDate" placeholder="Event Date" ><span id = "dateerror"></span>
+                    <input type="time" id="eventTime" name="eventTime" placeholder="Event Time" ><span id = "timeerror"></span>
                     <input name="submit" type="submit">
                 </form>
             </div>
@@ -193,7 +193,87 @@ if ($_SESSION['loggedIn']) {
             header('location:./signin.php');
         }
             ?>
+            <script type="text/javascript">
+                function validation(){
+                    var status = 0;
+                    var eventTitle = document.addEvent.eventTitle.value.trim();
+                    var eventDesc = document.addEvent.eventDesc.value.trim();
+                    var eventDate = document.addEvent.eventDate.value.trim();
+                    var eventTime = document.addEvent.eventTime.value.trim();
+                    if(eventTitle == ""){
+                        document.getElementById('titleerror').innerHTML="Please include title";
+                        status++;
+                    }
+                    if(eventTitle.length>100){
+                        document.getElementById('titleerror').innerHTML="cannot be maximm then 100";
+                        return false;
+                    }
+                    if(eventDesc == ""){
+                        document.getElementById('descerror').innerHTML="Please include description";
+                        return false;
+                    }
+                    if(eventDesc.length>500){
+                        document.getElementById('descerror').innerHTML="Please include less description";
+                        return false;
+                    }
+                    if(eventDate ==""){
+                        document.getElementById('dateerror').innerHTML="Please select date";
+                        return false;
+                    }
+                    if(eventTime ==""){
+                        document.getElementById('timeerror').innerHTML="Please select time";
+                        return false;
+                    }
+                    if (status==0){
+                        return true;
+                    }else 
+                    return false;
+
+                }
+            
+            </script>
+
+<script type="text/javascript">
+                function evalidation(){
+                    var status = 0;
+                    var eeventTitle = document.editEvent.eeventTitle.value.trim();
+                    var eeventDesc = document.editEvent.eeventDesc.value.trim();
+                    var eeventDate = document.editEvent.eeventDate.value.trim();
+                    var eeventTime = document.editEvent.eeventTime.value.trim();
+                    if(eventTitle == ""){
+                        document.getElementById('etitleerror').innerHTML="Please include title";
+                        status++;
+                    }
+                    if(eventTitle.length>100){
+                        document.getElementById('etitleerror').innerHTML="cannot be maximm then 100";
+                        return false;
+                    }
+                    if(eventDesc == ""){
+                        document.getElementById('edescerror').innerHTML="Please include description";
+                        return false;
+                    }
+                    if(eventDesc.length>500){
+                        document.getElementById('edescerror').innerHTML="Please include less description";
+                        return false;
+                    }
+                    if(eventDate ==""){
+                        document.getElementById('edateerror').innerHTML="Please select date";
+                        return false;
+                    }
+                    if(eventTime ==""){
+                        document.getElementById('etimeerror').innerHTML="Please select time";
+                        return false;
+                    }
+                    if (status==0){
+                        return true;
+                    }else 
+                    return false;
+
+                }
+            
+            </script>
+
+
 
 </body>
-
 </html>
