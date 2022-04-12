@@ -9,14 +9,6 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <?php
-// session_start();
-// session_destroy();
-// if (!isset($_SESSION['SESSION_EMAIL'])) {
-//     header("Location: ./signin.php");
-//     die();
-// }
-
-
 session_start();
 
 if ($_SESSION['loggedIn']) {
@@ -43,12 +35,34 @@ if ($_SESSION['loggedIn']) {
                 </div>
                 <div class="navTitleDetails">
                     <div class="navTitleName">
-                        <h1><?php echo "Welcome " . $row['fullname'];
+                        <h1><?php echo "Welcome, " . $row['fullname'];
                                 }
                                     ?></h1>
                     </div>
                     <div class="navTitleDate">
-                        <h1>Jan 01, 2022</h1>
+                        <script>
+                        var today = new Date();
+                        var todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        document.write(`<h1>${todayDate} </h1>`)
+                        </script>
+                        <div id="timer">
+                            <script>
+                            setInterval(function() {
+                                var currentTime = new Date();
+                                var currentHours = currentTime.getHours();
+                                var currentMinutes = currentTime.getMinutes();
+                                var currentSeconds = currentTime.getSeconds();
+                                currentMinutes = (currentMinutes < 10 ? "0" : "") + currentMinutes;
+                                currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+                                var timeOfDay = (currentHours < 12) ? "AM" : "PM";
+                                currentHours = (currentHours > 12) ? currentHours - 12 : currentHours;
+                                currentHours = (currentHours == 0) ? 12 : currentHours;
+                                var currentTimeString = currentHours + ":" + currentMinutes + ":" +
+                                    currentSeconds + " " + timeOfDay;
+                                document.getElementById("timer").innerHTML = currentTimeString;
+                            }, 10);
+                            </script>
+                        </div>
                     </div>
 
                 </div>
@@ -60,8 +74,11 @@ if ($_SESSION['loggedIn']) {
                 <div class="events">
                     <a href="#">Events </a>
                 </div>
+                <div class="completed">
+                    <a href="./completed.php">Completed Events </a>
+                </div>
                 <div class="setting">
-                    <a href="events.html">Setting </a>
+                    <a href="./setting.php">Setting </a>
                 </div>
                 <div class="logout">
                     <a href="./logout.php">Logout</a>
@@ -73,10 +90,25 @@ if ($_SESSION['loggedIn']) {
                 <button id="listofEventBtn">List of events</button>
 
             </div>
+            <div class="content-features">
+                <button id="addEventBtn" onclick="addevent()">Add Event</button>
+            </div>
+            <div class="popupAddevent" id="addDetails" style="display: none;">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+                    <label>
+                        <h3>Enter Event</h3>
+                    </label>
+                    <input type="text" name="eventTitle" placeholder="Event Title">
+                    <input type="text" name="eventDesc" placeholder="Event Description">
+                    <input type="date" name="eventDate" placeholder="Event Date">
+                    <input type="time" name="eventTime" placeholder="Event Time">
+                    <input name="submit" type="submit">
+                </form>
+            </div>
             <div class="content-all">
                 <div class="eventlist">
                     <?php
-                            $q = "select * from eventdetails WHERE userId= $userId ";
+                            $q = "SELECT * FROM `eventdetails` WHERE userID=$userId ORDER BY date DESC;";
                             $qy = "select event_id from eventdetails WHERE userId= $userId";
                             $query = mysqli_query($conn, $q);
                             // $res = $conn->query($q);
@@ -101,7 +133,12 @@ if ($_SESSION['loggedIn']) {
                             </div>
                         </div>
                         <div class="btnevents">
-                            <button id="editEventBtn" onclick="editevent()">Edit Event</button>
+                            <button id="editEventBtn" onclick="editevent()">Edit event </button>
+                            <!-- <?php $eventid = $res['event_id'];
+                                                    echo $res['event_id']; ?> -->
+                            <!-- <form method=" post" name="editEvent">
+                                <input type="submit" name="editBtn" value="edit events">
+                                </form> -->
                             <button id="deleteEventBtn"><a href="./php/delete.php?id=<?php echo $res['event_id']; ?>">
                                     Delete </a> </button>
                             <button id="completeEventBtn"><a
@@ -115,29 +152,29 @@ if ($_SESSION['loggedIn']) {
                     </div>
 
                     <div class="editEvent" id="eventDetails" style="display: none;">
-                        <form name="editEvent" action=" ./php/edit.php?id=<?php echo $res['event_id']; ?>" method="post" onsubmit="return evalidation()">
-                            <label>Enter Event </label>
-                            <input type="text" id="eeventTitle" name="eeventTitle" placeholder="Event Title"
-                                value=" <?php echo $res['event_title'] ?> "><span id = "etitleerror"></span>
-                            <input type="text" id="eeventDesc" name="eeventDesc" placeholder="Event Description"
-                                value=" <?php echo $res['event_desc'] ?> "><span id = "edescerror"></span>
-                            <input type="date" id="eeventDate" name="eeventDate" placeholder="Event Date"
-                                value=" <?php echo $res['date'] ?> "><span id = "edateerror"></span>
-                            <input type="time" id="eeventTime" name="eeventTime" placeholder="Event Time"
-                                value=" <?php echo $res['time'] ?> "><span id = "etimeerror"></span>
+                        <form action=" ./php/edit.php?id=<?php echo $res['event_id']; ?>" method="post">
+                            <label>
+                                <h3>Change Event</h3>
+                            </label>
+                            <input type="text" name="eeventTitle" placeholder="Event Title"
+                                value=" <?php echo $res['event_title'] ?> ">
+                            <input type="text" name="eeventDesc" placeholder="Event Description"
+                                value=" <?php echo $res['event_desc'] ?> ">
+                            <input type="date" name="eeventDate" placeholder="Event Date"
+                                value=" <?php echo $res['date'] ?> ">
+                            <input type="time" name="eeventTime" placeholder="Event Time"
+                                value=" <?php echo $res['time'] ?> ">
                             <input name="esubmit" type="submit">
                         </form>
                     </div>
                     <?php }
-                            }
-                     ?>
+                                // }
+                            } ?>
 
                 </div>
             </div>
 
-            <div class="content-features">
-                <button id="addEventBtn" onclick="addevent()">Add Event</button>
-            </div>
+
             <script>
             function addevent() {
                 var addDetails = document.getElementById('addDetails')
@@ -147,6 +184,12 @@ if ($_SESSION['loggedIn']) {
                     addDetails.style.display = "none";
                 }
             }
+            // var editDetails = document.getElementById('eventDetails')
+            // // console.log(e)
+            // // var editDetails = e;
+            // var editBtn = document.getElementById('<?php $eventid ?>').addEventListener('click', () => {
+            //     console.log(" edit is clicked")
+            // })
 
             function editevent() {
                 var editDetails = document.getElementById('eventDetails')
@@ -157,18 +200,6 @@ if ($_SESSION['loggedIn']) {
                 }
             }
             </script>
-
-
-            <div class="popupAddevent"  id="addDetails" style="display: none;">
-                <form name="addEvent" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" onsubmit="return validation()">
-                    <label>Enter Event </label>
-                    <input type="text" id="eventTitle" name="eventTitle" placeholder="Event Title"><span id = "titleerror"></span>
-                    <input type="text" id="eventDesc" name="eventDesc" placeholder="Event Description"><span id = "descerror"></span>
-                    <input type="date" id="eventDate" name="eventDate" placeholder="Event Date" ><span id = "dateerror"></span>
-                    <input type="time" id="eventTime" name="eventTime" placeholder="Event Time" ><span id = "timeerror"></span>
-                    <input name="submit" type="submit">
-                </form>
-            </div>
         </div>
         <?php
 
@@ -273,7 +304,8 @@ if ($_SESSION['loggedIn']) {
             
             </script>
 
-
-
+<script src="./today-date.js"></script>
 </body>
+
 </html>
+
